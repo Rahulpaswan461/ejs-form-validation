@@ -45,7 +45,7 @@ in MongoDB Atlas using the MVC (Model-View-Controller) pattern.
     MONGO_URL=<your-mongodb-connection-string>
 
  ## Usage
-  1. node index.js
+  1. start the server - node index.js
   2. Open your browser and navigate to http://localhost:3000/api/user/submit to view the form.
   3. Fill out the form and submit to see validation and sanitization in action.
   4.To fetch all users, go to: http://localhost:3000/api/user/get-users.
