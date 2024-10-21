@@ -1,6 +1,5 @@
 const express = require("express");
 const { submitInformation, getAllusers } = require("../controllers/user");
-const validateForm = require("../middleware/validateForm");
 
 const router = express.Router();
 
@@ -10,7 +9,7 @@ router.get("/submit", (req, res) => {
 });
 
 // Handle form submission with validation middleware
-router.post("/submit", validateForm, submitInformation);
+router.post("/submit", submitInformation);
 
 // Fetch and return all users
 router.get("/get-users", getAllusers);

@@ -5,6 +5,7 @@ const { connectMongoDB } = require("./connection");
 const userRoute = require("./routes/user");
 const path = require("node:path");
 
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -15,6 +16,8 @@ connectMongoDB(process.env.MONGO_URL)
 
 // Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json())
+
 
 // Set EJS as the view engine and configure views folder
 app.set("view engine", "ejs");
