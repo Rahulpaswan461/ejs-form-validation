@@ -16,6 +16,11 @@ in MongoDB Atlas using the MVC (Model-View-Controller) pattern.
 - Data is sanitized to remove any unwanted HTML tags.
 - User data is stored in MongoDB Atlas after successful validation.
 - Follows the MVC architecture pattern.
+-  enhance form validation with pre-save hooks
+- Implemented custom validation in `pre('save')` hook for user schema.
+- Added regex validation for name to allow only alphabetic characters and spaces.
+- Added phone number validation to ensure exactly 10 digits.
+- Ensured users must agree to the terms and conditions before saving.
 
 ## Tech Stack
 - Node.js
