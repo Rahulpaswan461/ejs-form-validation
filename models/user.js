@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-// Create Mongoose Schema with validation rules
+// Create Mongoose Schema with basic validation rules
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -9,12 +9,6 @@ const userSchema = new mongoose.Schema({
     trim: true,
     minlength: [3, 'Name must be at least 3 characters long.'],
     maxlength: [30, 'Name must be less than 30 characters long.'],
-    validate: {
-      validator: function(value) {
-        return /^[a-zA-Z\s]+$/.test(value); // Allows alphabetic characters and spaces
-      },
-      message: 'Name must contain only alphabetic characters.'
-    }
   },
   email: {
     type: String,
@@ -27,12 +21,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Phone number is required'],
     trim: true,
-    validate: {
-      validator: function(value) {
-        return /^\d{10}$/.test(value); // Ensures phone number has exactly 10 digits
-      },
-      message: 'Phone number must be exactly 10 digits.'
-    }
   },
   terms: {
     type: Boolean,
@@ -41,7 +29,35 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Compile model
+// Pre-save hook to add custom validation logic before saving the document
+userSchema.pre('save', function (next) {
+  const user = this;
+
+  // Custom validation for the name field to contain only alphabetic characters and spaces
+  const nameRegex = /^[a-zA-Z\s]+$/;
+  if (!nameRegex.test(user.name)) {
+    const error = new Error('Name must contain only alphabetic characters.');
+    return next(error);
+  }
+
+  // Custom validation for the phone number to ensure exactly 10 digits
+  const phoneRegex = /^\d{10}$/;
+  if (!phoneRegex.test(user.phone)) {
+    const error = new Error('Phone number must be exactly 10 digits.');
+    return next(error);
+  }
+
+  // Ensure terms and conditions are agreed upon (true)
+  if (user.terms !== true) {
+    const error = new Error('You must agree to the Terms and Conditions.');
+    return next(error);
+  }
+
+  // If all validations pass, move to the next middleware or save
+  next();
+});
+
+// Compile the model
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
